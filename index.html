@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mediline Clinical Laboratory | Varthur, Bengaluru</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        medical: {
+                            bg: '#FFFFFF',
+                            secondary: '#F3FBFC',
+                            primary: '#0891B2',      /* Bluish Cyan */
+                            primaryDark: '#0e7490',
+                            accent: '#67D5E8',       /* Soft Cyan */
+                            text: '#123047',         /* Navy / blue dark text */
+                            muted: '#5B6B78',
+                            border: '#DCEEF2',
+                            lightBlue: '#E0F2FE'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            color: #123047;
+            background-color: #FFFFFF;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F3FBFC;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #67D5E8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0891B2;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-medical-bg text-medical-text selection:bg-medical-lightBlue selection:text-medical-primaryDark flex flex-col min-h-screen">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-medical-border shadow-xs transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand / Logo -->
+                <div class="flex flex-col cursor-pointer" onclick="switchPage('home')">
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-medical-primary text-white p-2 rounded-lg flex items-center justify-center shadow-xs">
+                            <i class="fa-solid fa-flask-vial text-lg"></i>
+                        </span>
+                        <div>
+                            <span class="text-xl sm:text-2xl font-bold tracking-tight text-medical-text leading-none">MEDILINE</span>
+                            <span class="text-xs sm:text-sm font-semibold tracking-wider text-medical-primary block uppercase">Clinical Laboratory</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8 font-medium text-sm">
+                    <button onclick="switchPage('home')" id="nav-home" class="nav-link text-medical-primary font-semibold transition-colors hover:text-medical-primary">HOME</button>
+                    <button onclick="switchPage('tests')" id="nav-tests" class="nav-link text-medical-muted transition-colors hover:text-medical-primary">ALL TESTS</button>
+                    <button onclick="switchPage('home'); scrollToSection('packages');" class="nav-link text-medical-muted transition-colors hover:text-medical-primary">HEALTH PACKAGES</button>
+                    <button onclick="toggleCart()" class="relative flex items-center space-x-1.5 bg-medical-secondary border border-medical-border px-3.5 py-2 rounded-lg text-medical-text font-semibold hover:border-medical-primary transition-colors">
+                        <i class="fa-solid fa-cart-shopping text-medical-primary"></i>
+                        <span>CART</span>
+                        <span id="cart-badge" class="ml-1 bg-medical-primary text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+                    </button>
+                </nav>
+
+                <!-- Header Actions (WhatsApp & Mobile Menu Toggle) -->
+                <div class="flex items-center space-x-3">
+                    <a href="https://wa.me/918660110835?text=Hello%20Mediline%20Clinical%20Laboratory,%20I%20would%20like%20to%20know%20more%20about%20your%20services." target="_blank" class="hidden sm:inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors shadow-xs">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>8660110835</span>
+                    </a>
+                    <!-- Mobile cart icon -->
+                    <button onclick="toggleCart()" class="md:hidden relative p-2.5 bg-medical-secondary border border-medical-border rounded-lg text-medical-text hover:border-medical-primary">
+                        <i class="fa-solid fa-cart-shopping text-medical-primary text-lg"></i>
+                        <span id="cart-badge-mobile" class="absolute -top-1 -right-1 bg-medical-primary text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">0</span>
+                    </button>
+                    <!-- Mobile menu button -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 bg-medical-secondary border border-medical-border rounded-lg text-medical-text hover:border-medical-primary">
+                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-medical-border px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchPage('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-medical-text hover:bg-medical-secondary">HOME</button>
+            <button onclick="switchPage('tests'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-medical-text hover:bg-medical-secondary">ALL TESTS & CATALOGUE</button>
+            <button onclick="switchPage('home'); scrollToSection('packages'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg font-medium text-medical-text hover:bg-medical-secondary">HEALTH PACKAGES</button>
+            <a href="https://wa.me/918660110835?text=Hello%20Mediline%20Clinical%20Laboratory,%20I%20would%20like%20to%20know%20more%20about%20your%20services." target="_blank" class="flex items-center justify-center space-x-2 w-full bg-emerald-600 text-white font-medium px-4 py-2.5 rounded-lg text-sm shadow-xs mt-2">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>WhatsApp: 8660110835</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER (2 Pages handled via JS view switching) -->
+    <main class="flex-grow">
+
+        <!-- ================= PAGE 1: HOME ================= -->
+        <div id="page-home" class="page-view">
+            <!-- Hero Section -->
+            <section class="relative bg-gradient-to-b from-medical-secondary to-medical-bg py-16 sm:py-24 border-b border-medical-border overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="max-w-3xl">
+                        <div class="inline-flex items-center space-x-2 bg-white border border-medical-border px-3.5 py-1.5 rounded-full text-xs font-semibold text-medical-primary mb-6 shadow-xs">
+                            <i class="fa-solid fa-award"></i>
+                            <span>Serving Varthur and nearby areas for 15+ years</span>
+                        </div>
+                        <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-medical-text leading-tight mb-4">
+                            Reliable Diagnostic Testing in Varthur
+                        </h1>
+                        <p class="text-lg sm:text-xl font-semibold text-medical-primary mb-4">
+                            Accurate • Reliable • Affordable
+                        </p>
+                        <p class="text-medical-muted text-base sm:text-lg mb-8 leading-relaxed">
+                            Professional clinical laboratory services with state-of-the-art diagnostics and patient care. 
+                            <span class="font-semibold text-medical-text">Free Home Collection within approximately 5 km radius of Varthur.</span>
+                        </p>
+
+                        <!-- Areas served inline tag -->
+                        <div class="bg-white/80 backdrop-blur-sm border border-medical-border p-4 rounded-xl mb-8 shadow-xs">
+                            <p class="text-xs font-bold uppercase tracking-wider text-medical-muted mb-2">Areas We Serve:</p>
+                            <p class="text-sm font-medium text-medical-text flex flex-wrap gap-x-2 gap-y-1">
+                                <span class="text-medical-primary font-semibold">Varthur</span> • 
+                                <span>Gunjur</span> • 
+                                <span>Balagere</span> • 
+                                <span>Muthsandra</span> • 
+                                <span>Valepura</span> • 
+                                <span>Madhuranagar</span>
+                            </p>
+                        </div>
+
+                        <!-- CTA Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="switchPage('tests')" class="bg-medical-primary hover:bg-medical-primaryDark text-white font-semibold px-8 py-3.5 rounded-xl transition-all shadow-sm flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <span>VIEW ALL TESTS</span>
+                            </button>
+                            <button onclick="scrollToSection('home-collection')" class="bg-white hover:bg-medical-secondary border border-medical-primary text-medical-primary font-semibold px-8 py-3.5 rounded-xl transition-all shadow-xs flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-house-medical"></i>
+                                <span>BOOK HOME COLLECTION</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="py-16 bg-white border-b border-medical-border">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <span class="text-medical-primary font-bold text-xs uppercase tracking-widest bg-medical-secondary px-3 py-1 rounded-md">About Laboratory</span>
+                            <h2 class="text-2xl sm:text-3xl font-bold text-medical-text mt-3 mb-4">MEDILINE CLINICAL LABORATORY</h2>
+                            <p class="text-lg font-semibold text-medical-primary mb-4">Serving Varthur for 15+ Years</p>
+                            <p class="text-medical-muted leading-relaxed mb-6">
+                                Mediline Clinical Laboratory provides professional laboratory testing services for patients in Varthur and surrounding areas. Committed to clinical precision, affordability, and patient convenience, our experienced staff ensures reliable diagnostic reports to support your healthcare journey.
+                            </p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-medical-secondary p-4 rounded-xl border border-medical-border">
+                                    <p class="text-2xl font-bold text-medical-primary mb-1">15+ Years</p>
+                                    <p class="text-xs text-medical-muted font-medium">Trusted Local Experience</p>
+                                </div>
+                                <div class="bg-medical-secondary p-4 rounded-xl border border-medical-border">
+                                    <p class="text-2xl font-bold text-medical-primary mb-1">5 km Radius</p>
+                                    <p class="text-xs text-medical-muted font-medium">Free Home Collection</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-medical-secondary p-8 rounded-2xl border border-medical-border relative">
+                            <h3 class="text-lg font-bold text-medical-text mb-4 flex items-center space-x-2">
+                                <i class="fa-solid fa-location-dot text-medical-primary"></i>
+                                <span>Laboratory Location & Contact</span>
+                            </h3>
+                            <div class="space-y-4 text-sm">
+                                <div>
+                                    <p class="font-semibold text-medical-muted uppercase text-xs">Address</p>
+                                    <p class="text-medical-text font-medium mt-1">Opposite Government Hospital, Varthur, Bengaluru – 560087</p>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-medical-muted uppercase text-xs">Contact WhatsApp</p>
+                                    <a href="https://wa.me/918660110835" target="_blank" class="text-medical-primary font-bold hover:underline mt-1 inline-flex items-center space-x-1">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                        <span>+91 8660110835</span>
+                                    </a>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-medical-muted uppercase text-xs">Service Type</p>
+                                    <p class="text-medical-text font-medium mt-1">Walk-in Testing & Free Home Collection</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Areas We Serve Section -->
+            <section class="py-16 bg-medical-secondary border-b border-medical-border">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-medical-text mb-3">AREAS WE SERVE</h2>
+                    <p class="text-medical-muted max-w-2xl mx-auto mb-8">We proudly provide diagnostic services and home sample collection across Varthur and neighboring communities.</p>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+                        <div class="bg-white p-5 rounded-xl border border-medical-border shadow-xs">
+                            <i class="fa-solid fa-map-pin text-medical-primary mb-2 text-xl"></i>
+                            <h3 class="font-bold text-medical-text">Varthur</h3>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-medical-border shadow-xs">
+                            <i class="fa-solid fa-map-pin text-medical-primary mb-2 text-xl"></i>
+                            <h3 class="font-bold text-medical-text">Gunjur</h3>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-medical-border shadow-xs">
+                            <i class="fa-solid fa-map-pin text-medical-primary mb-2 text-xl"></i>
+                            <h3 class="font-bold text-medical-text">Balagere</h3>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-medical-border shadow-xs">
+                            <i class="fa-solid fa-map-pin text-medical-primary mb-2 text-xl"></i>
+                            <h3 class="font-bold text-medical-text">Muthsandra</h3>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-medical-border shadow-xs">
+                            <i class="fa-solid fa-map-pin text-medical-primary mb-2 text-xl"></i>
+                            <h3 class="font-bold text-medical-text">Valepura</h3>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-medical-border shadow-xs">
+                            <i class="fa-solid fa-map-pin text-medical-primary mb-2 text-xl"></i>
+                            <h3 class="font-bold text-medical-text">Madhuranagar</h3>
+                        </div>
+                    </div>
+                    <p class="text-sm font-semibold text-medical-primary bg-white inline-block px-6 py-2.5 rounded-full border border-medical-border shadow-xs">
+                        <i class="fa-solid fa-truck-fast mr-2"></i> Free Home Collection available within approximately 5 km radius of Varthur.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Health Packages Section -->
+            <section id="packages" class="py-16 bg-white border-b border-medical-border">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-12">
+                        <span class="text-medical-primary font-bold text-xs uppercase tracking-widest bg-medical-secondary px-3 py-1 rounded-md">Curated Care</span>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-medical-text mt-3 mb-3">POPULAR HEALTH PACKAGES</h2>
+                        <p class="text-medical-muted">Comprehensive diagnostic health check-up packages designed for accurate health assessment at affordable prices.</p>
+                    </div>
+
+                    <div id="packages-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Packages injected via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Free Home Collection & Walk-in Section -->
+            <section id="home-collection" class="py-16 bg-medical-secondary border-b border-medical-border">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Home Collection Banner -->
+                        <div class="bg-white p-8 rounded-2xl border border-medical-border shadow-xs flex flex-col justify-between">
+                            <div>
+                                <span class="bg-medical-lightBlue text-medical-primary text-xs font-bold px-3 py-1 rounded-md">CONVENIENT SERVICE</span>
+                                <h2 class="text-2xl font-bold text-medical-text mt-3 mb-2">FREE HOME COLLECTION</h2>
+                                <p class="text-medical-muted font-medium mb-4">We collect your samples at home for your convenience.</p>
+                                <p class="text-sm text-medical-text font-semibold mb-3">
+                                    <i class="fa-solid fa-circle-check text-medical-primary mr-1.5"></i> Free Home Collection within approximately 5 km radius of Varthur.
+                                </p>
+                                <p class="text-xs text-medical-muted mb-6">
+                                    Includes: Varthur • Gunjur • Balagere • Muthsandra • Valepura • Madhuranagar
+                                </p>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <button onclick="openCheckoutWithCollection('home')" class="bg-medical-primary hover:bg-medical-primaryDark text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-xs text-center">
+                                    BOOK HOME COLLECTION
+                                </button>
+                                <a href="https://wa.me/918660110835?text=Hello%20Mediline,%20I%20would%20like%20to%20book%20a%20Free%20Home%20Collection." target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-xs flex items-center justify-center space-x-2">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                    <span>8660110835</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Walk-in Banner -->
+                        <div class="bg-white p-8 rounded-2xl border border-medical-border shadow-xs flex flex-col justify-between">
+                            <div>
+                                <span class="bg-medical-lightBlue text-medical-primary text-xs font-bold px-3 py-1 rounded-md">DIRECT VISIT</span>
+                                <h2 class="text-2xl font-bold text-medical-text mt-3 mb-2">WALK-IN TESTING</h2>
+                                <p class="text-medical-muted font-medium mb-4">Customers can simply walk into the laboratory for their tests.</p>
+                                <p class="text-sm text-medical-text font-semibold mb-3">
+                                    <i class="fa-solid fa-location-dot text-medical-primary mr-1.5"></i> Opposite Government Hospital, Varthur, Bengaluru – 560087
+                                </p>
+                                <p class="text-xs text-medical-muted mb-6">
+                                    No appointment needed for routine tests. Walk in during laboratory opening hours.
+                                </p>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <button onclick="openCheckoutWithCollection('walkin')" class="bg-medical-primary hover:bg-medical-primaryDark text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-xs text-center">
+                                    BOOK / CONTACT US
+                                </button>
+                                <a href="https://wa.me/918660110835?text=Hello%20Mediline,%20I%20would%20like%20to%20inquire%20about%20walk-in%20testing." target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-xs flex items-center justify-center space-x-2">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                    <span>WhatsApp Us</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Prescription / Custom Test Request Section -->
+            <section class="py-16 bg-white border-b border-medical-border">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="bg-medical-secondary border border-medical-border p-8 rounded-2xl shadow-xs">
+                        <div class="text-center mb-8">
+                            <span class="bg-white text-medical-primary text-xs font-bold px-3 py-1 rounded-md border border-medical-border">CUSTOM REQUEST</span>
+                            <h2 class="text-2xl font-bold text-medical-text mt-3 mb-2">HAVE A PRESCRIPTION?</h2>
+                            <p class="text-medical-muted text-sm sm:text-base">Can't find your required test? Send us your prescription or enter the tests you need.</p>
+                        </div>
+
+                        <form id="prescription-form" onsubmit="handlePrescriptionSubmit(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1.5">Patient Name *</label>
+                                    <input type="text" id="pres-name" required placeholder="Enter full name" class="w-full bg-white border border-medical-border rounded-xl px-4 py-3 text-medical-text focus:outline-none focus:border-medical-primary text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1.5">Mobile Number *</label>
+                                    <input type="tel" id="pres-mobile" required placeholder="10-digit mobile number" class="w-full bg-white border border-medical-border rounded-xl px-4 py-3 text-medical-text focus:outline-none focus:border-medical-primary text-sm">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1.5">Collection Type *</label>
+                                    <select id="pres-type" class="w-full bg-white border border-medical-border rounded-xl px-4 py-3 text-medical-text focus:outline-none focus:border-medical-primary text-sm">
+                                        <option value="Home Collection (Free within 5km)">Home Collection (Free within 5km)</option>
+                                        <option value="Walk-in Appointment">Walk-in Appointment</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1.5">Address (for Home Collection)</label>
+                                    <input type="text" id="pres-address" placeholder="House no, Street, Area in Varthur / nearby" class="w-full bg-white border border-medical-border rounded-xl px-4 py-3 text-medical-text focus:outline-none focus:border-medical-primary text-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1.5">Required Tests / Notes *</label>
+                                <textarea id="pres-tests" required rows="3" placeholder="List the tests prescribed by your doctor or enter your requirements..." class="w-full bg-white border border-medical-border rounded-xl px-4 py-3 text-medical-text focus:outline-none focus:border-medical-primary text-sm"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1.5">Upload Prescription (Optional Image)</label>
+                                <input type="file" id="pres-file" accept="image/*" class="w-full bg-white border border-medical-border rounded-xl px-4 py-2.5 text-medical-muted text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-medical-lightBlue file:text-medical-primary hover:file:bg-medical-accent">
+                                <p class="text-[11px] text-medical-muted mt-1">If the prescription image cannot be auto-attached on WhatsApp, you can attach it manually in the WhatsApp chat window once opened.</p>
+                            </div>
+
+                            <div class="pt-4">
+                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3.5 px-6 rounded-xl transition-all shadow-xs flex items-center justify-center space-x-2">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span>SEND TEST REQUEST ON WHATSAPP</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- ================= PAGE 2: ALL TESTS & CATALOGUE ================= -->
+        <div id="page-tests" class="page-view hidden">
+            <section class="bg-medical-secondary py-12 border-b border-medical-border">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-3xl mx-auto text-center">
+                        <span class="text-medical-primary font-bold text-xs uppercase tracking-widest bg-white px-3 py-1 rounded-md border border-medical-border">Catalogue</span>
+                        <h1 class="text-3xl font-bold text-medical-text mt-3 mb-3">ALL LABORATORY TESTS</h1>
+                        <p class="text-medical-muted mb-8">Browse complete test catalogue across Hematology, Biochemistry, Serology, Urine, Tumor Markers and Health Packages.</p>
+                        
+                        <!-- Search Bar -->
+                        <div class="relative max-w-2xl mx-auto">
+                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-medical-muted">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                            <input type="text" id="test-search-input" oninput="handleSearch(this.value)" placeholder="Search for a test (e.g., CBC, Vitamin D, Thyroid, Lipid, Dengue)..." class="w-full bg-white border border-medical-border rounded-xl pl-11 pr-4 py-3.5 text-medical-text text-sm focus:outline-none focus:border-medical-primary shadow-xs">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category Filter Buttons -->
+            <div class="sticky top-20 z-30 bg-white/95 backdrop-blur-md border-b border-medical-border py-3 shadow-xs">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center space-x-2 overflow-x-auto pb-1 no-scrollbar text-sm font-medium">
+                        <button onclick="filterCategory('all')" id="cat-btn-all" class="cat-filter-btn px-4 py-2 rounded-lg bg-medical-primary text-white whitespace-nowrap transition-colors shadow-xs">All Tests</button>
+                        <button onclick="filterCategory('Hematology')" id="cat-btn-Hematology" class="cat-filter-btn px-4 py-2 rounded-lg bg-medical-secondary text-medical-text hover:bg-medical-lightBlue whitespace-nowrap transition-colors">Hematology</button>
+                        <button onclick="filterCategory('Serology')" id="cat-btn-Serology" class="cat-filter-btn px-4 py-2 rounded-lg bg-medical-secondary text-medical-text hover:bg-medical-lightBlue whitespace-nowrap transition-colors">Serology</button>
+                        <button onclick="filterCategory('Urine Tests')" id="cat-btn-Urine Tests" class="cat-filter-btn px-4 py-2 rounded-lg bg-medical-secondary text-medical-text hover:bg-medical-lightBlue whitespace-nowrap transition-colors">Urine Tests</button>
+                        <button onclick="filterCategory('Biochemistry')" id="cat-btn-Biochemistry" class="cat-filter-btn px-4 py-2 rounded-lg bg-medical-secondary text-medical-text hover:bg-medical-lightBlue whitespace-nowrap transition-colors">Biochemistry</button>
+                        <button onclick="filterCategory('Tumor Markers')" id="cat-btn-Tumor Markers" class="cat-filter-btn px-4 py-2 rounded-lg bg-medical-secondary text-medical-text hover:bg-medical-lightBlue whitespace-nowrap transition-colors">Tumor Markers</button>
+                        <button onclick="filterCategory('Profiles')" id="cat-btn-Profiles" class="cat-filter-btn px-4 py-2 rounded-lg bg-medical-secondary text-medical-text hover:bg-medical-lightBlue whitespace-nowrap transition-colors">Profiles & Packages</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Catalogue Results -->
+            <section class="py-12 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div id="test-catalogue-container" class="space-y-10">
+                        <!-- Dynamic categories and test cards injected here -->
+                    </div>
+                    <div id="no-search-results" class="hidden text-center py-16">
+                        <i class="fa-solid fa-circle-exclamation text-4xl text-medical-muted mb-3"></i>
+                        <h3 class="text-lg font-bold text-medical-text">No matching tests found</h3>
+                        <p class="text-medical-muted text-sm mt-1">Try searching with a different keyword or use our custom prescription form.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+
+    <!-- ================= CART & CHECKOUT DRAWER / MODAL ================= -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-medical-text/40 backdrop-blur-xs transition-opacity" onclick="toggleCart()"></div>
+
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <!-- Cart Header -->
+                <div class="flex items-center justify-between px-6 py-4 bg-medical-secondary border-b border-medical-border">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-cart-shopping text-medical-primary"></i>
+                        <h2 class="text-lg font-bold text-medical-text">Your Cart (<span id="drawer-item-count">0</span>)</h2>
+                    </div>
+                    <button onclick="toggleCart()" class="p-2 rounded-lg text-medical-muted hover:text-medical-text hover:bg-white transition-colors">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Body / Steps -->
+                <div id="cart-content-area" class="flex-1 overflow-y-auto p-6 space-y-6">
+                    <!-- Step 1: Cart Items List -->
+                    <div id="cart-items-view">
+                        <div id="cart-items-list" class="space-y-3 mb-6">
+                            <!-- Items injected here -->
+                        </div>
+                        <div id="cart-empty-state" class="text-center py-12">
+                            <i class="fa-solid fa-basket-shopping text-4xl text-medical-muted/50 mb-3"></i>
+                            <p class="text-medical-muted font-medium">Your cart is currently empty.</p>
+                            <button onclick="toggleCart(); switchPage('tests');" class="mt-4 bg-medical-primary text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-xs">BROWSE TESTS</button>
+                        </div>
+
+                        <div id="cart-summary-box" class="hidden bg-medical-secondary p-4 rounded-xl border border-medical-border space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-medical-muted">Subtotal</span>
+                                <span id="cart-subtotal" class="font-semibold text-medical-text">₹0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-medical-muted">Collection Charge</span>
+                                <span class="text-emerald-600 font-semibold">FREE</span>
+                            </div>
+                            <div class="border-t border-medical-border pt-2 flex justify-between text-base font-bold">
+                                <span class="text-medical-text">Total Amount</span>
+                                <span id="cart-total" class="text-medical-primary">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Checkout Form (Initially hidden or shown based on flow) -->
+                    <div id="checkout-form-view" class="hidden space-y-4">
+                        <div class="flex items-center justify-between pb-2 border-b border-medical-border">
+                            <h3 class="font-bold text-medical-text">Patient & Collection Details</h3>
+                            <button onclick="showCartItemsView()" class="text-xs font-semibold text-medical-primary hover:underline">← Back to Cart</button>
+                        </div>
+
+                        <form id="order-form" onsubmit="submitOrderToWhatsApp(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1">Patient Name *</label>
+                                <input type="text" id="chk-name" required placeholder="Full Name" class="w-full bg-medical-secondary border border-medical-border rounded-xl px-3.5 py-2.5 text-medical-text text-sm focus:outline-none focus:border-medical-primary">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1">Mobile Number *</label>
+                                <input type="tel" id="chk-mobile" required placeholder="10-digit mobile number" class="w-full bg-medical-secondary border border-medical-border rounded-xl px-3.5 py-2.5 text-medical-text text-sm focus:outline-none focus:border-medical-primary">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1">Collection Type *</label>
+                                <div class="space-y-2 mt-1">
+                                    <label class="flex items-center space-x-3 p-3 bg-medical-secondary rounded-xl border border-medical-border cursor-pointer hover:border-medical-primary">
+                                        <input type="radio" name="chk-collection" value="Home Collection — FREE" checked onchange="handleCollectionTypeChange()" class="text-medical-primary focus:ring-medical-primary">
+                                        <div>
+                                            <span class="text-sm font-bold text-medical-text block">Home Collection — FREE</span>
+                                            <span class="text-xs text-emerald-600 font-semibold">Free within ~5km of Varthur</span>
+                                        </div>
+                                    </label>
+                                    <label class="flex items-center space-x-3 p-3 bg-medical-secondary rounded-xl border border-medical-border cursor-pointer hover:border-medical-primary">
+                                        <input type="radio" name="chk-collection" value="Walk-in Appointment" onchange="handleCollectionTypeChange()" class="text-medical-primary focus:ring-medical-primary">
+                                        <div>
+                                            <span class="text-sm font-bold text-medical-text block">Walk-in Appointment</span>
+                                            <span class="text-xs text-medical-muted">Visit lab opposite Govt Hospital, Varthur</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div id="address-field-container">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1">Address for Collection *</label>
+                                <textarea id="chk-address" required rows="2" placeholder="House no, Street, Landmark, Area..." class="w-full bg-medical-secondary border border-medical-border rounded-xl px-3.5 py-2.5 text-medical-text text-sm focus:outline-none focus:border-medical-primary"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-medical-muted mb-1">Additional Notes / Tests</label>
+                                <input type="text" id="chk-notes" placeholder="Any specific instructions or clinical notes" class="w-full bg-medical-secondary border border-medical-border rounded-xl px-3.5 py-2.5 text-medical-text text-sm focus:outline-none focus:border-medical-primary">
+                            </div>
+
+                            <div class="pt-4">
+                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-xs flex items-center justify-center space-x-2 text-sm">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span>SEND ORDER ON WHATSAPP</span>
+                                </button>
+                                <p class="text-[11px] text-center text-medical-muted mt-2">WhatsApp Business: +91 8660110835</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Cart Footer Actions -->
+                <div id="cart-footer-actions" class="p-4 bg-medical-secondary border-t border-medical-border">
+                    <button id="proceed-checkout-btn" onclick="showCheckoutView()" class="w-full bg-medical-primary hover:bg-medical-primaryDark text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-xs text-sm flex items-center justify-center space-x-2">
+                        <span>Proceed to Checkout</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer class="bg-medical-secondary border-t border-medical-border py-12 text-medical-text mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-3">
+                        <span class="bg-medical-primary text-white p-1.5 rounded-md flex items-center justify-center">
+                            <i class="fa-solid fa-flask-vial"></i>
+                        </span>
+                        <span class="text-lg font-bold">MEDILINE CLINICAL LABORATORY</span>
+                    </div>
+                    <p class="text-xs text-medical-primary font-semibold mb-2">Accurate • Reliable • Affordable</p>
+                    <p class="text-sm text-medical-muted">Serving Varthur and nearby areas for 15+ years with professional diagnostic testing.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm uppercase tracking-wider mb-3">Location & Contact</h3>
+                    <p class="text-sm text-medical-muted mb-2">
+                        <i class="fa-solid fa-location-dot text-medical-primary mr-2"></i>
+                        Opposite Government Hospital, Varthur, Bengaluru – 560087
+                    </p>
+                    <p class="text-sm text-medical-muted">
+                        <i class="fa-brands fa-whatsapp text-emerald-600 mr-2 text-base"></i>
+                        WhatsApp: <a href="https://wa.me/918660110835" target="_blank" class="font-semibold text-medical-text hover:underline">8660110835</a>
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm uppercase tracking-wider mb-3">Areas Served & Home Collection</h3>
+                    <p class="text-sm text-medical-muted mb-2">
+                        Varthur • Gunjur • Balagere • Muthsandra • Valepura • Madhuranagar
+                    </p>
+                    <p class="text-xs font-semibold text-medical-primary bg-white p-2 rounded-lg border border-medical-border inline-block">
+                        <i class="fa-solid fa-check mr-1"></i> Free Home Collection within ~5 km radius
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-medical-border pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-medical-muted">
+                <p>© 2026 Mediline Clinical Laboratory. All rights reserved.</p>
+                <p class="mt-2 sm:mt-0">Clean • Medical • Trustworthy • Modern</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // MASTER DATA STRUCTURE FOR ALL TESTS & PACKAGES
+        const HEALTH_PACKAGES = [
+            { id: 'pkg-1', name: 'Diabetic Profile Basic', category: 'Profiles', tests: 'FBS, PPBS & HbA1c', price: 700 },
+            { id: 'pkg-2', name: 'Diabetic Profile Pro', category: 'Profiles', tests: 'FBS, PPBS, HbA1c & Lipid Profile', price: 1200 },
+            { id: 'pkg-3', name: 'Senior Citizen Complete Health Profile', category: 'Profiles', tests: 'CBC with ESR, FBS, PPBS, HbA1c, Lipid Profile, LFT, KFT, Thyroid Profile, Vitamin D, Vitamin B12 & Urine Routine', price: 3000 },
+            { id: 'pkg-4', name: 'Allergy Profile Basic', category: 'Profiles', tests: 'CBC, AEC & IgE', price: 1500 },
+            { id: 'pkg-5', name: 'Hormones Profile (Female)', category: 'Profiles', tests: 'FSH, LH, Prolactin, Estradiol & Progesterone', price: 3000 },
+            { id: 'pkg-6', name: 'Arthritis Profile', category: 'Profiles', tests: 'RA, CRP, ASLO, Anti-CCP, Uric Acid, CBC & ANA', price: 3500 },
+            { id: 'pkg-7', name: 'Renal Profile', category: 'Profiles', tests: 'Urea, Creatinine, eGFR & Electrolytes', price: 1200 },
+            { id: 'pkg-8', name: 'Cardiac Profile', category: 'Profiles', tests: 'Lipid Profile, LDH, hs-CRP, Homocysteine, Fasting Blood Glucose, HbA1c & CBC', price: 6000 },
+            { id: 'pkg-9', name: 'Iron Profile', category: 'Profiles', tests: 'Complete Hemogram, Iron, Ferritin, TIBC, Vitamin B12 & Folate', price: 2500 },
+            { id: 'pkg-10', name: 'Fever Profile', category: 'Profiles', tests: 'CBC with ESR, Widal, Dengue NS1/IgG/IgM, Urine Routine & Malaria Parasite', price: 2200 },
+            { id: 'pkg-11', name: 'Master Health Check-Up', category: 'Profiles', tests: 'CBC with ESR, KFT, LFT, TFT, Lipid Profile, Urine Analysis, Iron Profile, Vitamin B12 & D, Electrolytes, Calcium & Phosphorus', price: 3200 },
+            { id: 'pkg-12', name: 'Pregnancy Complete Health Profile', category: 'Profiles', tests: 'CBC with ESR, Blood Group, BT/CT, RBS, HIV, HBsAg, HCV, VDRL, TFT & Urine Routine', price: 3000 }
+        ];
+
+        const TEST_CATALOGUE = [
+            // Hematology
+            { id: 'test-hem-1', name: 'CBC with ESR', category: 'Hematology', price: 400 },
+            { id: 'test-hem-2', name: 'P Smear', category: 'Hematology', price: 300 },
+            { id: 'test-hem-3', name: 'BT & CT (Coagulation)', category: 'Hematology', price: 300 },
+            { id: 'test-hem-4', name: 'PT / PTT / INR (Coagulation)', category: 'Hematology', price: 800 },
+
+            // Serology
+            { id: 'test-ser-1', name: 'Blood Group', category: 'Serology', price: 100 },
+            { id: 'test-ser-2', name: 'HIV ELISA', category: 'Serology', price: 800 },
+            { id: 'test-ser-3', name: 'HBsAg ELISA', category: 'Serology', price: 600 },
+            { id: 'test-ser-4', name: 'HCV ELISA', category: 'Serology', price: 800 },
+            { id: 'test-ser-5', name: 'VDRL', category: 'Serology', price: 400 },
+            { id: 'test-ser-6', name: 'Widal', category: 'Serology', price: 300 },
+            { id: 'test-ser-7', name: 'Malaria Parasite', category: 'Serology', price: 300 },
+            { id: 'test-ser-8', name: 'Dengue Profile', category: 'Serology', price: 1200 },
+            { id: 'test-ser-9', name: 'Rubella IgG & IgM', category: 'Serology', price: 1800 },
+            { id: 'test-ser-10', name: 'Total IgE', category: 'Serology', price: 1000 },
+            { id: 'test-ser-11', name: 'CRP', category: 'Serology', price: 400 },
+            { id: 'test-ser-12', name: 'RA', category: 'Serology', price: 400 },
+            { id: 'test-ser-13', name: 'ASLO', category: 'Serology', price: 400 },
+            { id: 'test-ser-14', name: 'Anti-CCP', category: 'Serology', price: 1200 },
+            { id: 'test-ser-15', name: 'AEC', category: 'Serology', price: 200 },
+
+            // Urine Tests
+            { id: 'test-uri-1', name: 'Urine Microalbumin Creatinine Ratio', category: 'Urine Tests', price: 1000 },
+            { id: 'test-uri-2', name: 'Urine Complete Examination', category: 'Urine Tests', price: 300 },
+            { id: 'test-uri-3', name: 'Urine Culture C/S', category: 'Urine Tests', price: 1000 },
+
+            // Biochemistry
+            { id: 'test-bio-1', name: 'Fasting & Post-Prandial Blood Sugar', category: 'Biochemistry', price: 100 },
+            { id: 'test-bio-2', name: 'HbA1c', category: 'Biochemistry', price: 600 },
+            { id: 'test-bio-3', name: 'Lipid Profile', category: 'Biochemistry', price: 600 },
+            { id: 'test-bio-4', name: 'Liver Function Test', category: 'Biochemistry', price: 1000 },
+            { id: 'test-bio-5', name: 'Urea & Creatinine', category: 'Biochemistry', price: 500 },
+            { id: 'test-bio-6', name: 'Uric Acid', category: 'Biochemistry', price: 300 },
+            { id: 'test-bio-7', name: 'Calcium', category: 'Biochemistry', price: 300 },
+            { id: 'test-bio-8', name: 'Serum Electrolytes', category: 'Biochemistry', price: 500 },
+            { id: 'test-bio-9', name: 'Thyroid Profile (5 Parameters)', category: 'Biochemistry', price: 800 },
+            { id: 'test-bio-10', name: 'Thyroid Profile (3 Parameters)', category: 'Biochemistry', price: 600 },
+            { id: 'test-bio-11', name: 'Vitamin B12', category: 'Biochemistry', price: 600 },
+            { id: 'test-bio-12', name: 'Vitamin D3', category: 'Biochemistry', price: 1200 },
+            { id: 'test-bio-13', name: 'Folic Acid', category: 'Biochemistry', price: 800 },
+            { id: 'test-bio-14', name: 'Magnesium', category: 'Biochemistry', price: 800 },
+            { id: 'test-bio-15', name: 'Phosphorus', category: 'Biochemistry', price: 800 },
+            { id: 'test-bio-16', name: 'Serum Iron', category: 'Biochemistry', price: 400 },
+            { id: 'test-bio-17', name: 'Total Testosterone', category: 'Biochemistry', price: 800 },
+            { id: 'test-bio-18', name: 'LH, FSH & Prolactin', category: 'Biochemistry', price: 1500 },
+            { id: 'test-bio-19', name: 'AMH', category: 'Biochemistry', price: 2000 },
+            { id: 'test-bio-20', name: 'ANA', category: 'Biochemistry', price: 1000 },
+            { id: 'test-bio-21', name: 'LDH', category: 'Biochemistry', price: 600 },
+            { id: 'test-bio-22', name: 'D-Dimer', category: 'Biochemistry', price: 1200 },
+            { id: 'test-bio-23', name: 'Amylase', category: 'Biochemistry', price: 800 },
+            { id: 'test-bio-24', name: 'Lipase', category: 'Biochemistry', price: 800 },
+            { id: 'test-bio-25', name: 'Bilirubin (Total & Direct)', category: 'Biochemistry', price: 300 },
+            { id: 'test-bio-26', name: 'CPK-MB', category: 'Biochemistry', price: 1500 },
+            { id: 'test-bio-27', name: 'Troponin I', category: 'Biochemistry', price: 1200 },
+            { id: 'test-bio-28', name: 'Troponin T', category: 'Biochemistry', price: 1800 },
+            { id: 'test-bio-29', name: 'Blood Culture', category: 'Biochemistry', price: 1400 },
+
+            // Tumor Markers
+            { id: 'test-tum-1', name: 'CA-125', category: 'Tumor Markers', price: 1200 },
+            { id: 'test-tum-2', name: 'PSA', category: 'Tumor Markers', price: 1200 },
+            { id: 'test-tum-3', name: 'AFP', category: 'Tumor Markers', price: 800 }
+        ];
+
+        // Combine all items into a unified lookup map
+        const ALL_ITEMS = [...HEALTH_PACKAGES.map(p => ({ ...p, isPackage: true })), ...TEST_CATALOGUE];
+
+        // Cart State
+        let cart = [];
+
+        // Initialization on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPackagesHomepage();
+            renderTestCatalogue('all');
+            updateCartUI();
+        });
+
+        // Navigation Page Switcher
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+            
+            // Update nav active styles
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('text-medical-primary', 'font-semibold');
+                el.classList.add('text-medical-muted');
+            });
+            if(pageId === 'home') {
+                document.getElementById('nav-home').classList.add('text-medical-primary', 'font-semibold');
+                document.getElementById('nav-home').classList.remove('text-medical-muted');
+            } else if(pageId === 'tests') {
+                document.getElementById('nav-tests').classList.add('text-medical-primary', 'font-semibold');
+                document.getElementById('nav-tests').classList.remove('text-medical-muted');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToSection(sectionId) {
+            switchPage('home');
+            setTimeout(() => {
+                const el = document.getElementById(sectionId);
+                if(el) {
+                    el.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 50);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            menu.classList.toggle('hidden');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-xmark');
+        }
+
+        // Render Packages on Homepage
+        function renderPackagesHomepage() {
+            const container = document.getElementById('packages-grid');
+            container.innerHTML = HEALTH_PACKAGES.map(pkg => `
+                <div class="bg-medical-secondary p-6 rounded-2xl border border-medical-border flex flex-col justify-between shadow-xs hover:border-medical-primary transition-all">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="bg-white text-medical-primary text-[11px] font-bold px-2.5 py-1 rounded-md border border-medical-border uppercase">Health Profile</span>
+                            <span class="text-xl font-bold text-medical-text">₹${pkg.price.toLocaleString('en-IN')}</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-medical-text mb-2">${pkg.name}</h3>
+                        <p class="text-xs text-medical-muted leading-relaxed mb-6">${pkg.tests}</p>
+                    </div>
+                    <button onclick="addToCart('${pkg.id}')" class="w-full bg-medical-primary hover:bg-medical-primaryDark text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition-all shadow-xs flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-cart-plus"></i>
+                        <span>ADD TO CART</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Render Complete Test Catalogue
+        function renderTestCatalogue(categoryFilter, searchQuery = '') {
+            const container = document.getElementById('test-catalogue-container');
+            const noResults = document.getElementById('no-search-results');
+            
+            let filteredItems = ALL_ITEMS;
+
+            if (categoryFilter !== 'all') {
+                if (categoryFilter === 'Profiles') {
+                    filteredItems = filteredItems.filter(item => item.isPackage);
+                } else {
+                    filteredItems = filteredItems.filter(item => item.category === categoryFilter && !item.isPackage);
+                }
+            }
+
+            if (searchQuery.trim() !== '') {
+                const q = searchQuery.toLowerCase();
+                filteredItems = ALL_ITEMS.filter(item => 
+                    item.name.toLowerCase().includes(q) || 
+                    item.category.toLowerCase().includes(q) ||
+                    (item.tests && item.tests.toLowerCase().includes(q))
+                );
+            }
+
+            if (filteredItems.length === 0) {
+                container.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            // Group by category if showing all or search
+            const categories = categoryFilter === 'all' && searchQuery === '' 
+                ? ['Profiles', 'Hematology', 'Serology', 'Urine Tests', 'Biochemistry', 'Tumor Markers']
+                : [...new Set(filteredItems.map(i => i.category))];
+
+            let html = '';
+            categories.forEach(cat => {
+                const itemsInCat = filteredItems.filter(i => i.category === cat);
+                if (itemsInCat.length === 0) return;
+
+                html += `
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-bold text-medical-text border-b border-medical-border pb-2 flex items-center space-x-2">
+                            <span class="w-2.5 h-2.5 bg-medical-primary rounded-full"></span>
+                            <span>${cat.toUpperCase()}</span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${itemsInCat.map(item => `
+                                <div class="bg-medical-secondary p-4 rounded-xl border border-medical-border flex items-center justify-between shadow-xs hover:border-medical-primary transition-all">
+                                    <div class="pr-3">
+                                        <h4 class="font-bold text-medical-text text-sm sm:text-base">${item.name}</h4>${item.tests ? `<p class="text-[11px] text-medical-muted mt-0.5 line-clamp-1">${item.tests}</p>` : ''}
+                                        <p class="text-medical-primary font-bold text-sm mt-1">₹${item.price.toLocaleString('en-IN')}</p>
+                                    </div>
+                                    <button onclick="addToCart('${item.id}')" class="bg-white hover:bg-medical-primary hover:text-white text-medical-primary border border-medical-primary font-semibold p-2.5 rounded-lg transition-all shadow-xs flex-shrink-0" title="Add to Cart">
+                                        <i class="fa-solid fa-cart-plus text-sm"></i>
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-medical-primary', 'text-white', 'shadow-xs');
+                btn.classList.add('bg-medical-secondary', 'text-medical-text');
+            });
+            const activeBtn = document.getElementById(`cat-btn-${cat}`);
+            if(activeBtn) {
+                activeBtn.classList.remove('bg-medical-secondary', 'text-medical-text');
+                activeBtn.classList.add('bg-medical-primary', 'text-white', 'shadow-xs');
+            }
+            document.getElementById('test-search-input').value = '';
+            renderTestCatalogue(cat);
+        }
+
+        function handleSearch(query) {
+            renderTestCatalogue('all', query);
+        }
+
+        // Cart Management Functions
+        function addToCart(itemId) {
+            const item = ALL_ITEMS.find(i => i.id === itemId);
+            if (!item) return;
+
+            const existing = cart.find(i => i.id === itemId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+            updateCartUI();
+            
+            // Open cart drawer on add
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer.classList.contains('hidden')) {
+                toggleCart();
+            }
+        }
+
+        function removeFromCart(itemId) {
+            cart = cart.filter(i => i.id !== itemId);
+            updateCartUI();
+        }
+
+        function updateQuantity(itemId, delta) {
+            const item = cart.find(i => i.id === itemId);
+            if (!item) return;
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                removeFromCart(itemId);
+            } else {
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, i) => sum + i.quantity, 0);
+            document.getElementById('cart-badge').innerText = totalCount;
+            document.getElementById('cart-badge-mobile').innerText = totalCount;
+            document.getElementById('drawer-item-count').innerText = totalCount;
+
+            const listContainer = document.getElementById('cart-items-list');
+            const emptyState = document.getElementById('cart-empty-state');
+            const summaryBox = document.getElementById('cart-summary-box');
+            const footerActions = document.getElementById('cart-footer-actions');
+
+            if (cart.length === 0) {
+                listContainer.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                summaryBox.classList.add('hidden');
+                footerActions.classList.add('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            summaryBox.classList.remove('hidden');
+            footerActions.classList.remove('hidden');
+
+            listContainer.innerHTML = cart.map(item => `
+                <div class="bg-medical-secondary p-3.5 rounded-xl border border-medical-border flex items-center justify-between">
+                    <div class="pr-2">
+                        <h4 class="font-bold text-medical-text text-sm">${item.name}</h4>
+                        <p class="text-medical-primary font-bold text-xs mt-0.5">₹${item.price.toLocaleString('en-IN')} × ${item.quantity} = ₹${(item.price * item.quantity).toLocaleString('en-IN')}</p>
+                    </div>
+                    <div class="flex items-center space-x-2 flex-shrink-0">
+                        <div class="flex items-center bg-white border border-medical-border rounded-lg overflow-hidden">
+                            <button onclick="updateQuantity('${item.id}', -1)" class="px-2 py-1 text-medical-muted hover:bg-medical-secondary text-xs font-bold">-</button>
+                            <span class="px-2.5 py-1 text-xs font-bold text-medical-text">${item.quantity}</span>
+                            <button onclick="updateQuantity('${item.id}', 1)" class="px-2 py-1 text-medical-muted hover:bg-medical-secondary text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="removeFromCart('${item.id}')" class="text-rose-500 hover:text-rose-700 p-1.5">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            const subtotal = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+            document.getElementById('cart-subtotal').innerText = `₹${subtotal.toLocaleString('en-IN')}`;
+            document.getElementById('cart-total').innerText = `₹${subtotal.toLocaleString('en-IN')}`;
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('hidden');
+            showCartItemsView();
+        }
+
+        function showCheckoutView() {
+            if (cart.length === 0) return;
+            document.getElementById('cart-items-view').classList.add('hidden');
+            document.getElementById('cart-summary-box').classList.add('hidden');
+            document.getElementById('cart-footer-actions').classList.add('hidden');
+            document.getElementById('checkout-form-view').classList.remove('hidden');
+        }
+
+        function showCartItemsView() {
+            document.getElementById('checkout-form-view').classList.add('hidden');
+            document.getElementById('cart-items-view').classList.remove('hidden');
+            document.getElementById('cart-summary-box').classList.remove('hidden');
+            document.getElementById('cart-footer-actions').classList.remove('hidden');
+        }
+
+        function openCheckoutWithCollection(type) {
+            // Open cart first if empty, or directly proceed if items present
+            if (cart.length === 0) {
+                alert('Please add at least one test or package to your cart before booking.');
+                switchPage('tests');
+                return;
+            }
+            toggleCart();
+            showCheckoutView();
+            if (type === 'home') {
+                document.querySelector('input[name="chk-collection"][value="Home Collection — FREE"]').checked = true;
+            } else {
+                document.querySelector('input[name="chk-collection"][value="Walk-in Appointment"]').checked = true;
+            }
+            handleCollectionTypeChange();
+        }
+
+        function handleCollectionTypeChange() {
+            const collectionType = document.querySelector('input[name="chk-collection"]:checked').value;
+            const addressContainer = document.getElementById('address-field-container');
+            const addressInput = document.getElementById('chk-address');
+            if (collectionType.includes('Walk-in')) {
+                addressContainer.classList.add('hidden');
+                addressInput.removeAttribute('required');
+            } else {
+                addressContainer.classList.remove('hidden');
+                addressInput.setAttribute('required', 'true');
+            }
+        }
+
+        // WhatsApp Checkout Submission
+        function submitOrderToWhatsApp(event) {
+            event.preventDefault();
+            const name = document.getElementById('chk-name').value.trim();
+            const mobile = document.getElementById('chk-mobile').value.trim();
+            const collectionType = document.querySelector('input[name="chk-collection"]:checked').value;
+            const address = document.getElementById('chk-address').value.trim();
+            const notes = document.getElementById('chk-notes').value.trim();
+
+            if (!name || !mobile) {
+                alert('Please fill in patient name and mobile number.');
+                return;
+            }
+
+            let testsText = '';
+            let totalAmount = 0;
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                totalAmount += itemTotal;
+                testsText += `${index + 1}. ${item.name} (${item.quantity}x) — ₹${itemTotal.toLocaleString('en-IN')}\n`;
+            });
+
+            const message = `Hello Mediline Clinical Laboratory,\n\nI would like to book the following tests:\n\nPatient Name: ${name}\nMobile: ${mobile}\nAddress: ${collectionType.includes('Walk-in') ? 'Walk-in at Laboratory' : (address || 'Varthur Area')}\nCollection Type: ${collectionType}\n\nSelected Tests:\n${testsText}\nTotal Amount: ₹${totalAmount.toLocaleString('en-IN')}\nAdditional Notes: ${notes || 'None'}\n\nPlease confirm my booking.`;
+
+            const whatsappUrl = `https://wa.me/918660110835?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Prescription Form Submission
+        function handlePrescriptionSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('pres-name').value.trim();
+            const mobile = document.getElementById('pres-mobile').value.trim();
+            const type = document.getElementById('pres-type').value;
+            const address = document.getElementById('pres-address').value.trim();
+            const tests = document.getElementById('pres-tests').value.trim();
+            const fileInput = document.getElementById('pres-file');
+
+            let fileNote = '';
+            if (fileInput.files && fileInput.files.length > 0) {
+                fileNote = `\n[Note: Prescription image uploaded. Please attach the image file manually in WhatsApp chat if not auto-attached.]`;
+            }
+
+            const message = `Hello Mediline Clinical Laboratory,\n\nI have a prescription / custom test request:\n\nPatient Name: ${name}\nMobile: ${mobile}\nCollection Type: ${type}\nAddress: ${address || 'Varthur Area'}\n\nRequired Tests / Notes:\n${tests}${fileNote}\n\nPlease review and confirm.`;
+
+            const whatsappUrl = `https://wa.me/918660110835?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
